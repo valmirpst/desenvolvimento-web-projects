@@ -18,8 +18,25 @@ export class ContatoController {
     return reply.send(contato);
   }
 
+  async getContatoByEmail(request, reply) {
+    const { email } = request.query;
+
+    const contato = this.contatoService.getContatoByEmail(email);
+
+    if (!contato) {
+      return reply.code(404).send({ message: "Contato não encontrado" });
+    }
+    return reply.send(contato);
+  }
+
   async createContato(request, reply) {
     const novoContato = this.contatoService.createContato(request.body);
+
+    if (novoContato === null)
+      return reply
+        .code(400)
+        .send({ message: "Nome deve ter ao menos 3 caracteres" });
+
     return reply.code(201).send(novoContato);
   }
 

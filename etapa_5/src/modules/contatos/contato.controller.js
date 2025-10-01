@@ -4,13 +4,13 @@ export class ContatoController {
   }
 
   async getContatos(request, reply) {
-    const contatos = this.contatoService.getAllContatos();
+    const contatos = await this.contatoService.getAllContatos();
     return reply.send(contatos);
   }
 
   async getContatoById(request, reply) {
     const { id } = request.params;
-    const contato = this.contatoService.getContatoById(id);
+    const contato = await this.contatoService.getContatoById(id);
 
     if (!contato) {
       return reply.code(404).send({ message: "Contato não encontrado" });
@@ -19,15 +19,17 @@ export class ContatoController {
   }
 
   async createContato(request, reply) {
-    const novoContato = this.contatoService.createContato(request.body);
+    const novoContato = await this.contatoService.createContato(
+      JSON.parse(request.body)
+    );
     return reply.code(201).send(novoContato);
   }
 
   async updateContato(request, reply) {
     const { id } = request.params;
-    const contatoAtualizado = this.contatoService.updateContato(
+    const contatoAtualizado = await this.contatoService.updateContato(
       id,
-      request.body
+      JSON.parse(request.body)
     );
 
     if (!contatoAtualizado) {
@@ -38,7 +40,7 @@ export class ContatoController {
 
   async deleteContato(request, reply) {
     const { id } = request.params;
-    const sucesso = this.contatoService.deleteContato(id);
+    const sucesso = await this.contatoService.deleteContato(id);
 
     if (!sucesso) {
       return reply.code(404).send({ message: "Contato não encontrado" });

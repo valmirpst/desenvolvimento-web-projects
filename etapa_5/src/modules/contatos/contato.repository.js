@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import dbPool from "../../infra/database";
+import dbPool from "../../infra/database.js";
 
 export class ContatoRepository {
   constructor() {
